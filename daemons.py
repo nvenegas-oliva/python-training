@@ -13,10 +13,10 @@ def check(name):
             state = os.stat(name)
             size = state.st_size
 
-        print(threading.current_thread().getName(),
-              counter,
-              size,
-              'bytes')
+        print("thread.name=%s\tcounter=%d\tsize=%d bytes" % (
+            threading.current_thread().getName(),
+            counter,
+            size))
 
         time.sleep(0.1)
 
