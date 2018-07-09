@@ -26,8 +26,10 @@ def write_file(name):
     while counter <= 10:
         with open(name, 'a') as file:
             file.write('1')
-            print(threading.current_thread().getName(),
-                  counter)
+            print("thread.name=%s\tcounter=%d" % (
+                threading.current_thread().getName(),
+                counter)
+            )
             time.sleep(0.3)
             counter += 1
 
