@@ -6,7 +6,7 @@ def simple_count():
     counter = 0
     while counter < 100:
         counter += 1
-        print("Thread=%s, id=%d, counter=%d" % (
+        print("thread.name=%s\tid=%d\tcounter=%d" % (
             threading.current_thread().getName(),
             threading.current_thread().ident,
             counter)
