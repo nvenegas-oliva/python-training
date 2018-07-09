@@ -45,6 +45,7 @@ def count_seconds(seconds):
 seconds = 2
 for n_thread in range(5):
     thread = threading.Thread(name='thread%s' % n_thread,
-                              target=contar,
+                              target=count_seconds,
                               args=(seconds,))
     thread.start()
+vmax_threads
