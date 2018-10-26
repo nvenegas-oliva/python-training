@@ -1,5 +1,10 @@
 
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+%matplotlib inline
+sns.set()
 
 pd.read_csv('time-series/appl_1980_2014.csv').head()
 
@@ -14,13 +19,6 @@ df.index.max() - df.index.min()
 
 
 len(df.resample('M').count().index)
-
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-%matplotlib inline
-sns.set()
 
 
 _ = plt.figure(figsize=(18, 6))
