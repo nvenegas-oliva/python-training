@@ -1,4 +1,6 @@
 
+# https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/
+
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -113,3 +115,26 @@ above. Now, let’s remove this from series and check stationarity:
 
 ts_log_ewma_diff = ts_log - expwighted_avg.mean()
 test_stationarity(ts_log_ewma_diff)
+"""
+This TS has even lesser variations in mean and standard deviation in magnitude.
+Also, the test statistic is smaller than the 1% critical value, which is better
+than the previous case. Note that in this case there will be no missing
+values as all values from starting are given weights. So it’ll work even
+with no previous values.
+"""
+
+"""
+The simple trend reduction techniques discussed before don’t work in all cases,
+particularly the ones with high seasonality. Lets discuss two ways of
+removing trend and seasonality:
+
+Differencing – taking the differece with a particular time lag
+Decomposition – modeling both trend and seasonality and removing them from the model.
+"""
+
+
+ts_log_diff = ts_log - ts_log.shift()
+_ = ts_log_diff.plot()
+
+ts_log_diff.dropna(inplace=True)
+test_stationarity(ts_log_diff)
