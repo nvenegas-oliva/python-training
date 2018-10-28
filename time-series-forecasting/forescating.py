@@ -56,3 +56,60 @@ def test_stationarity(timeseries):
 
 
 test_stationarity(df['Passengers'])
+
+
+# Estimating and eliminating trend
+
+_ = np.log(df['Passengers']).plot()
+
+
+"""
+In this simpler case, it is easy to see a forward trend in the data.
+But its not very intuitive in presence of noise. So we can use some techniques
+to estimate or model this trend and then remove it from the series.
+There can be many ways of doing it and some of most commonly used are:
+
+Aggregation – taking average for a time period like monthly/weekly averages
+Smoothing – taking rolling averages
+Polynomial Fitting – fit a regression model
+
+In this approach, we take average of ‘k’ consecutive values depending on the
+frequency of time series. Here we can take the average over the past 1 year,
+i.e. last 12 values. Pandas has specific functions defined for
+determining rolling statistics.
+"""
+
+ts_log = np.log(df['Passengers'])
+moving_avg = ts_log.rolling(window=12).mean()
+_ = np.log(df['Passengers']).plot()
+_ = moving_avg.plot(color='red')
+
+
+ts_log_moving_avg_diff = ts_log - moving_avg
+ts_log_moving_avg_diff.head(12)
+
+ts_log_moving_avg_diff.dropna(inplace=True)
+test_stationarity(ts_log_moving_avg_diff)
+
+
+"""
+This looks like a much better series. The rolling values appear to be varying
+slightly but there is no specific trend. Also, the test statistic is
+smaller than the 5% critical values so we can say with 95% confidence
+that this is a stationary series.
+"""
+expwighted_avg = ts_log.ewm(halflife=12)
+_ = ts_log.plot()
+_ = expwighted_avg.mean().plot(color='red')
+
+"""
+Note that here the parameter ‘halflife’ is used to define the amount of
+exponential decay. This is just an assumption here and would depend
+largely on the business domain. Other parameters like span and center of
+mass can also be used to define decay which are discussed in the link shared
+above. Now, let’s remove this from series and check stationarity:
+"""
+
+
+ts_log_ewma_diff = ts_log - expwighted_avg.mean()
+test_stationarity(ts_log_ewma_diff)
